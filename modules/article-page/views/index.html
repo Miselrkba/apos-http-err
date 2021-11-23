@@ -1,0 +1,40 @@
+{% import '@apostrophecms/pager:macros.html' as pager with context %}
+{% extends "layout.html" %}
+
+{% block main %}
+<section class='govuk-width-container'>
+  <header>
+    <h1>{{ data.page.title }}</h1>
+  </header>
+  <div class="govuk-grid-row articles">
+    <!-- Loop over each article -->
+    {# <div class="govuk-grid-column-one-third"> #}
+      {% for article in data.pieces %}
+      <div class="govuk-grid-column-one-third">
+        <!-- Get the image to display -->
+        {% set image = apos.image.first(article.photo) %}
+        {% set imgUrl = apos.attachment.url(image, { size: 'one-third' }) %}
+        {% if imgUrl %}
+        <img class="articles__thumbnail" src="{{ imgUrl }}" alt="{{ article.photo.items[0].alt or '' }}" />
+        {% endif %}
+        <h2 >
+          <a class='govuk-link' href="{{ article._url }}">{{ article.title }}</a>
+        </h2>
+        <p>
+          Autor - {{ article.contributor }}
+        </p>
+        {% if article.description %}
+        <p>
+          {{ article.description }}
+        </p>
+        {% endif %}
+      {# </div> #}
+    </div>
+    {% endfor %}
+  </div>
+  {{ pager.render({
+  page: data.currentPage,
+  total: data.totalPages
+  }, data.url) }}
+</section>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% set article = data.piece %}
+
+
+{% block main %}
+  <section class="article-page">
+    <header>
+      <h1>{{ article.title }} - {{ article.contributor }}</h1>
+    </header>
+    {% set image = apos.image.first(article.photo) %}
+    {% set imgUrl = apos.attachment.url(image, { size: 'one-third' }) %}
+    {% if imgUrl %}
+      <img
+        class="articles__thumbnail"
+        src="{{ imgUrl }}" alt="{{ article.photo.items[0].alt or '' }}"
+      />
+    {% endif %}
+    {% if article.description %}
+    <p class='govuk-body'>
+      {{ article.description }}
+    </p>
+    {% endif %}
+  </section>
+  <section>
+  {% area article, 'main' %}
+</section>
+
+{% endblock %}
+
